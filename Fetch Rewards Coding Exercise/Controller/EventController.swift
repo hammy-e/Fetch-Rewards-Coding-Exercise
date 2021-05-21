@@ -15,6 +15,14 @@ class EventController: UIViewController {
         didSet{configure()}
     }
     
+    let eventTitle: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 28)
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+    
     private let image: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
@@ -44,13 +52,17 @@ class EventController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configure()
-        
+        navigationController?.navigationBar.tintColor = .white
         view.backgroundColor = .white
         
+        view.addSubview(eventTitle)
+        eventTitle.centerX(inView: view)
+        eventTitle.setWidth(view.frame.width - 12)
+        eventTitle.anchor(top: view.topAnchor, paddingTop: 40)
+        
         view.addSubview(image)
-        image.setDimensions(height: view.frame.width - 100, width: view.frame.width - 100)
-        image.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 50)
+        image.setDimensions(height: view.frame.width, width: view.frame.width)
+        image.anchor(top: eventTitle.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 12)
         
         view.addSubview(eventDescription)
         eventDescription.setWidth(view.frame.width)
@@ -84,13 +96,12 @@ class EventController: UIViewController {
     func configure() {
         guard let event = event else {return}
         
-        navigationItem.title = event.name
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
+        eventTitle.text = event.name
         
         image.sd_setImage(with: URL(string: event.imageURL))
         
-        let attributedText = NSMutableAttributedString(string: "\(event.date)\n", attributes: [.font: UIFont.boldSystemFont(ofSize: 28), .foregroundColor: UIColor.black])
-        attributedText.append(NSAttributedString(string: "\(event.location)", attributes: [.font: UIFont.boldSystemFont(ofSize: 24), .foregroundColor: UIColor.gray]))
+        let attributedText = NSMutableAttributedString(string: "\(event.date)\n", attributes: [.font: UIFont.boldSystemFont(ofSize: 24), .foregroundColor: UIColor.black])
+        attributedText.append(NSAttributedString(string: "\(event.location)", attributes: [.font: UIFont.boldSystemFont(ofSize: 20), .foregroundColor: UIColor.gray]))
         eventDescription.attributedText = attributedText
         
         favoriteButton.backgroundColor = event.isFavorited ? #colorLiteral(red: 0.9660039544, green: 0.5945872664, blue: 0.55089885, alpha: 1) : #colorLiteral(red: 0.9107013345, green: 0.905287683, blue: 0.9148628116, alpha: 1)

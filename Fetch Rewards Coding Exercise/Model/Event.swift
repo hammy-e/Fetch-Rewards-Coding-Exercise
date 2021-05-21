@@ -21,7 +21,9 @@ struct Event {
     
     init(data: JSON, index: Int) {
         id = data["events"][index]["id"].intValue
-        name = data["events"][index]["venue"]["name"].stringValue
+        let performersName = data["events"][index]["performers"][0]["name"].stringValue
+        let venueName = data["events"][index]["venue"]["name"].stringValue
+        name = "\(performersName) at \(venueName)"
         date = Event.getDate(data["events"][index]["datetime_utc"].stringValue)
         location = data["events"][index]["venue"]["display_location"].stringValue
         imageURL = data["events"][index]["performers"][0]["image"].stringValue

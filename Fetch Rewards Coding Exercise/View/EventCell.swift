@@ -68,7 +68,7 @@ class EventCell: UITableViewCell {
         
         if event.isFavorited {
             addSubview(favoriteHeart)
-            favoriteHeart.anchor(top: topAnchor, left: leftAnchor, paddingTop: 6, paddingLeft: 6)
+            favoriteHeart.anchor(top: topAnchor, left: leftAnchor, paddingTop: 3, paddingLeft: 3)
         } else {
             favoriteHeart.removeFromSuperview()
         }
