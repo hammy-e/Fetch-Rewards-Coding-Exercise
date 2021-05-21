@@ -26,6 +26,7 @@ class EventController: UIViewController {
     private let image: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
         iv.layer.cornerRadius = 12
         return iv
     }()
@@ -58,11 +59,12 @@ class EventController: UIViewController {
         view.addSubview(eventTitle)
         eventTitle.centerX(inView: view)
         eventTitle.setWidth(view.frame.width - 12)
-        eventTitle.anchor(top: view.topAnchor, paddingTop: 40)
+        eventTitle.anchor(top: view.topAnchor, paddingTop: 32)
         
         view.addSubview(image)
-        image.setDimensions(height: view.frame.width, width: view.frame.width)
-        image.anchor(top: eventTitle.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 12)
+        image.setDimensions(height: view.frame.width - 150, width: view.frame.width - 32)
+        image.centerX(inView: view)
+        image.anchor(top: eventTitle.bottomAnchor, paddingTop: 12)
         
         view.addSubview(eventDescription)
         eventDescription.setWidth(view.frame.width)
@@ -79,11 +81,13 @@ class EventController: UIViewController {
         guard let event = event else {return}
         var favoritedEvents = UserDefaults.standard.array(forKey: FAVORITEDEVENTSKEY) as? [Int] ?? [Int]()
         if event.isFavorited {
+            favoriteButton.setTitle("Favorite❤️", for: .normal)
             favoriteButton.backgroundColor = #colorLiteral(red: 0.9107013345, green: 0.905287683, blue: 0.9148628116, alpha: 1)
             favoritedEvents.removeAll(where: {$0 == event.id})
             UserDefaults.standard.removeObject(forKey: FAVORITEDEVENTSKEY)
             UserDefaults.standard.set(favoritedEvents, forKey: FAVORITEDEVENTSKEY)
         } else {
+            favoriteButton.setTitle("Unfavorite❤️", for: .normal)
             favoriteButton.backgroundColor = #colorLiteral(red: 0.9660039544, green: 0.5945872664, blue: 0.55089885, alpha: 1)
             favoritedEvents.append(event.id)
             UserDefaults.standard.removeObject(forKey: FAVORITEDEVENTSKEY)
@@ -104,6 +108,7 @@ class EventController: UIViewController {
         attributedText.append(NSAttributedString(string: "\(event.location)", attributes: [.font: UIFont.boldSystemFont(ofSize: 20), .foregroundColor: UIColor.gray]))
         eventDescription.attributedText = attributedText
         
+        favoriteButton.setTitle(event.isFavorited ? "Unavorite❤️" : "Favorite❤️" , for: .normal)
         favoriteButton.backgroundColor = event.isFavorited ? #colorLiteral(red: 0.9660039544, green: 0.5945872664, blue: 0.55089885, alpha: 1) : #colorLiteral(red: 0.9107013345, green: 0.905287683, blue: 0.9148628116, alpha: 1)
     }
 }
