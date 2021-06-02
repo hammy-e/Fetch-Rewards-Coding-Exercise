@@ -1,6 +1,6 @@
 # Fetch Rewards Coding Exercise
 
-No further steps needed to run app, all that is needed is to just clone this git repo in Xcode.
+Fetched events data from SeatGeek API, parsed the JSON, added the data to a tableview, added a feature to favorite an event and made it persist between app launches using UserDefaults.
 
 Frameworks Used:
 - SwiftyJSON
